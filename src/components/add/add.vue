@@ -1,72 +1,61 @@
 <template>
-	<div>
-add
-<button>123123</button>
-	</div>
+<div>
+   <draggable element="ul" :options="{scroll:false}"  v-model="list">
+      <li class="list" v-for="(item,index) in list" :key="index">{{item.name}}</li>
+    </draggable>
+</div>
+
 </template>
 
 <script>
-	
-	export default{
-	    data(){//原始数据
-	        return{             
-	        }
-	    },
-	    props: {//传递参数            
-	    },
-	    computed:{ //计算属性
-	    },
-	    components: {//注册模块               
-	    },
-	    created(){//请求模块  比methods 快        
-	    },
-	    mounted() {/*
-	    	let that=this
-			new Promise(function (resolve, reject) {
-				return that.$axios({method: 'get',url: '/api/aaa'}).then((res)=>{
-					if(res.data.data==1){
-						resolve(123)
-					}else{
-						reject("第1个接口异常")//此处没有问题
-					}
-				})
-			}).then((id)=>{
-				return that.$axios({method: 'get',url: '/api/aaa1?a='+id}).then((res)=>{
-					if(res.data.data==62){
-						return Promise.resolve(456)
-					}else{
-//						return reject("第2个接口异常")
-						return Promise.reject('第2个接口异常');
-						//reject("第2个接口异常")// 报错 ReferenceError: reject is not defined
-					}
-				})
-			}).then((id)=>{
-				console.log('拿到'+id)
-				  that.$axios({method: 'get',url: '/api/aaa2'}).then((res)=>{
+import draggable from 'vuedraggable'
+export default {
+	name:'',
+	data(){
+	 return {
+ list:[
+        {
+          id: 1,
+          name: 'a'
+        },
+        {
+          id: 2,
+          name: 'b'
+        },
+        {
+          id: 3,
+          name: 'c'
+        },
+        {
+          id: 4,
+          name: 'd'
+        },
+        {
+          id: 5,
+          name: 'e'
+        },
+        {
+          id: 6,
+          name: 'f'
+        },
+      ]
 
-				})
-			}).catch((error)=>{
-				 //alert(error)
-			})
-			
-			this.$axios.all([that.$axios({method: 'get',url: '/api/aaa'}), that.$axios({method: 'get',url: '/api/aaa1'})])
-			.then((a)=>{
-				console.log(a)
-			})
-	    */},
-	    methods: {//方法
-	    	aaa(){
-	    		 return this.$axios({method: 'get',url: '/api/aaa'})
-	    	},
-	    	aaa1(){
-	    		 this.$axios({method: 'get',url: '/api/aaa1'})
-	    	}
-	    }
+	 }
+	},
+mounted () {
+},
+	methods: {
+	},
+	components: {
+		draggable
 	}
-	
-	
+}
 </script>
 
-<style lang="less">
-	
+<style lang='less' scoped>
+.list{
+	height: 50px;
+	border: 1px solid;
+	margin: 5px;                  
+}
 </style>

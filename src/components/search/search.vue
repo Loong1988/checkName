@@ -34,10 +34,11 @@
 
 <script>
 	import { XHeader, Search , Group, Cell, XButton } from 'vux'
+	import axios from "axios"
 	import {data} from "static2/json/data.js"
 	import PY from "@/core/pinyin.js"
 	let pinyin = new PY()
-	
+
 	//import 
 	export default {
 		data() { //原始数据
@@ -55,9 +56,23 @@
 			XHeader,
 			Search,Group, Cell, XButton
 		},
-		created() { //请求模块  比methods 快        
+		created() { //请求模块  比methods 快      
+        axios.get('http://localhost:3000/users/test')
+          .then(function (response) {
+            console.log(response);
+          })
+          .catch(function (error) {
+            console.log(error);
+          });
 		},
 		mounted() { //比created慢  el 加载完毕
+		// console.log(111);
+		// 		axios.get('http://127.0.0.1:3000/one'
+		// 		).then(function(res){
+		// 			console.log(res);//处理成功的函数 相当于success
+		// 		}).catch(function(error){
+		// 			console.log(error)//错误处理 相当于error
+		// 		})
 			
 		},
 		methods: { //方法

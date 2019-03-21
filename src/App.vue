@@ -44,6 +44,7 @@
 </script>
 
 <style>
+@import url('../src/common/css/reset.css');
 	#app {
 		font-family: 'Avenir', Helvetica, Arial, sans-serif;
 		-webkit-font-smoothing: antialiased;
