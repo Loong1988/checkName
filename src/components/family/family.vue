@@ -1,32 +1,33 @@
 <template>
   <div>
-    <x-header :left-options="{showBack: false}">族谱1</x-header>
+    <x-header :left-options="{showBack: false}">族谱</x-header>
     <button @click="clean()">clean</button>
     <div class="box">
-			<draggable element="ul" :options="{scroll:false}" v-model="list">
-      <div v-for="(item,$index) in list" class="one" :key="$index">
+      <draggable element="ul" :options="{scroll:false}" v-model="list" @change="draChange">
+        <div v-for="(item,$index) in list" class="one" :key="$index">
+			<div class="add-person" @click.stop="addPerson($index)">+</div>
+          <div
+            v-for="(item2,$index2) in item.listDital"
+            :key="$index2"
+            class="two iconfont"
+            :class="{'icon-duigou':selected==item2.id}"
+            @click="tipTab(item2,item)"
+          >
+            <span class="iconfont icon-nansheng name">{{item2.name}}</span>
 			
-        <div
-          v-for="(item2,$index2) in item"
-          :key="$index2"
-          class="two iconfont"
-          :class="{'icon-duigou':selected==item2.id}"
-          @click="tipTab(item2,item)"
-        >
-          <span class="iconfont icon-nansheng name">{{item2.name}}</span>
-          <span v-if="item2.mate" class="iconfont icon-nvsheng name">{{item2.mate.name}}</span>
+            <span v-if="item2.mate" class="iconfont icon-nvsheng name">{{item2.mate.name}}</span>
+          </div>
         </div>
-      </div>
-     </draggable>
+      </draggable>
 
       <div style="width: 90%;margin: auto;">
         <x-button type="primary" @click.native="auditMember(1)">编辑</x-button>
         <div class="btns-bottom">
           <nav>
-            <x-button type="primary" @click.native="auditMember(2)">添加</x-button>
+            <x-button type="primary" @click.native="auditMember(2)">添加后裔</x-button>
           </nav>
           <nav>
-            <x-button type="default" @click.native="auditMember(3)">删除</x-button>
+            <x-button type="default" @click.native="delMember()">删除</x-button>
           </nav>
         </div>
         <!--<x-button type="primary"   @click.native="addMember('')">添加</x-button>-->
@@ -35,7 +36,7 @@
 
     <div v-transfer-dom class="tk">
       <popup v-model="show8" position="left" width="100%" class="add-family">
-        <x-header @on-click-back="show8 = false" :left-options="{preventGoBack: true}">增加成员</x-header>
+        <x-header @on-click-back="cleanback()" :left-options="{preventGoBack: true}">增加成员</x-header>
         分支：{{nowTit}}
         <nav>
           <x-input
@@ -107,7 +108,7 @@ import {
   Toast
 } from "vux";
 import { data } from "static2/json/data.js";
-import draggable from 'vuedraggable'
+import draggable from "vuedraggable";
 export default {
   data() {
     //原始数据
@@ -136,7 +137,7 @@ export default {
     //计算属性
   },
   directives: {
-		TransferDom,
+    TransferDom
   },
   components: {
     //注册模块
@@ -148,64 +149,64 @@ export default {
     Checker,
     CheckerItem,
     InlineXSwitch,
-		Toast,
-		draggable		
+    Toast,
+    draggable
   },
   created() {
     //请求模块  比methods 快
-    // let list = localStorage.getItem("list");
-    // if (list) {
-    //   console.log(list);
-    // } else {
-    //   localStorage.setItem("list", JSON.stringify(data.list));
-    // }
-    // let loc = localStorage.getItem("list");
-    // console.log(JSON.parse(loc));
-		// this.list = JSON.parse(loc);
-		this.list=[[{
-			area:"",
-			endTime:"",
-			id:"001",
-			mate:{
-				area:"",
-				endTime:"",
-				name:"付雪玲",
-				sex:"2",
-				starTime:"1952-09-28",
-			},
-			name:"曹留森",
-			sex:"1",
-			starTime:"1951-03-17",
-}],[{
-			area:"",
-			endTime:"",
-			id:"002",
-			mate:{
-				area:"",
-				endTime:"",
-				name:"方英",
-				sex:"2",
-				starTime:"1952-09-28",
+    let list = localStorage.getItem("list");
+    if (list) {
+      console.log(list);
+    } else {
+      localStorage.setItem("list", JSON.stringify(data.list));
+    }
+    let loc = localStorage.getItem("list");
+    console.log(JSON.parse(loc));
+	this.list = JSON.parse(loc);
+    // 		this.list=[[{
+    // 			area:"",
+    // 			endTime:"",
+    // 			id:"001",
+    // 			mate:{
+    // 				area:"",
+    // 				endTime:"",
+    // 				name:"付雪玲",
+    // 				sex:"2",
+    // 				starTime:"1952-09-28",
+    // 			},
+    // 			name:"曹留森",
+    // 			sex:"1",
+    // 			starTime:"1951-03-17",
+    // }],[{
+    // 			area:"",
+    // 			endTime:"",
+    // 			id:"002",
+    // 			mate:{
+    // 				area:"",
+    // 				endTime:"",
+    // 				name:"方英",
+    // 				sex:"2",
+    // 				starTime:"1952-09-28",
 
-			},
-			name:"曹建立",
-			sex:"1",
-			starTime:"1951-03-17",
-},{
-			area:"",
-			endTime:"",
-			id:"003",
-			mate:{
-				area:"",
-				endTime:"",
-				name:"燕子",
-				sex:"2",
-				starTime:"1952-09-28",
-			},
-			name:"曹龙",
-			sex:"1",
-			starTime:"1951-03-17",
-}]]
+    // 			},
+    // 			name:"曹建立",
+    // 			sex:"1",
+    // 			starTime:"1951-03-17",
+    // },{
+    // 			area:"",
+    // 			endTime:"",
+    // 			id:"003",
+    // 			mate:{
+    // 				area:"",
+    // 				endTime:"",
+    // 				name:"燕子",
+    // 				sex:"2",
+    // 				starTime:"1952-09-28",
+    // 			},
+    // 			name:"曹龙",
+    // 			sex:"1",
+    // 			starTime:"1951-03-17",
+    // }]]
   },
   mounted() {
     //比created慢  el 加载完毕
@@ -224,7 +225,8 @@ export default {
       };
     },
     subMember() {},
-    auditMember(type) {//1 编辑  2 添加  3 删除
+    auditMember(type) {
+      //1 编辑  2 添加  3 删除
       this.auditType = type;
       if (type == 1) {
         //编辑
@@ -238,16 +240,18 @@ export default {
           this.filter.isMary = true;
           this.filter.name2 = item.mate.name;
         }
-      } else if (type == 2) {
-        //添加
+      } else if (type == 2) {//添加
+		
+		this.show8 = true;
       } else if (type == 3) {
         //删除
       }
     },
     onBlur() {},
-    tipTab(item, item2) {//item 当前对象    //item2 当前兄弟对象
-				console.log(item)
-       	console.log(item2)
+    tipTab(item, item2) {
+      //item 当前对象    //item2 当前兄弟对象
+      console.log(item);
+      console.log(item2);
       this.auditItem = item;
       this.auditTit = item2.tit;
       if (item.id == this.selected) {
@@ -258,7 +262,34 @@ export default {
     },
     clean() {
       localStorage.removeItem("list");
-    },
+	},
+	listJson(){
+		localStorage.setItem("list", JSON.stringify(this.list));
+	},
+	addPerson(){},
+	delMember(){
+		// this.list.splice(3,1)
+		let id = this.selected
+		this.list.forEach((item,index)=>{
+			item.listDital.forEach((item2,index2)=>{
+					if(item2.id == id){
+						item.listDital.splice(index2,1)
+						if(item.listDital.length==0){
+							this.list.splice(index,1)
+						}
+					}
+			})
+		})
+      this.listJson()
+	},
+	cleanback(){
+		this.show8 = false
+		this.selected = ''
+		this.auditItem={}
+	},
+	draChange(evt){
+		this.listJson()
+	},
     save() {
       let addObj = {
         name: this.filter.name,
@@ -279,13 +310,34 @@ export default {
 
       if (this.auditType == 1) {
         addObj.id = this.auditItem.id;
-        this.list[this.auditTit].forEach((item, index) => {
-          if (item.id == addObj.id) {
-            item = addObj;
-          }
-        });
-      }
-      localStorage.setItem("list", JSON.stringify(data.list));
+        // this.list[this.auditTit].listDital.forEach((item, index) => {
+        //   if (item.id == addObj.id) {
+        //     item = addObj;
+        //   }
+		// });
+		this.list.forEach((item,index)=>{
+			item.listDital.forEach((item2,index2)=>{
+					if(item2.id == this.selected){
+						// item2 = addObj
+						this.list[index].listDital[index2] = addObj
+					}
+			})
+		})
+		this.selected = ''
+	  }
+	  if(this.auditType == 2){
+		  addObj.id = new Date().getTime()
+		  let obj = {
+			  listDital:[addObj],
+			  tit:this.list.length
+		  }
+		  
+		  this.list.push(obj)
+		  console.log(this.list);
+		  console.log(22222222);
+	  }
+
+      this.listJson()
       this.show8 = false;
 
       /*    		if(this.nowTit){//添加
@@ -320,12 +372,18 @@ export default {
 <style lang="less" scoped="">
 @import url("//at.alicdn.com/t/font_816014_n52lm48kl5a.css");
 .box {
-	
-	.name{
-		min-width: 75px;
-		display: inline-block;
-		text-align: left
-	}
+  .name {
+    min-width: 75px;
+    display: inline-block;
+    text-align: left;
+  }
+  .add-person{
+	  width: 30px;
+	  height: 30px;
+	  border: 1px solid;
+	  float: right;
+	  line-height: 30px;
+  }
   .one {
     border: 1px solid #dddddd;
     box-shadow: 2px 2px 2px #d0cdd1;
@@ -340,7 +398,7 @@ export default {
   .two {
     border: 1px solid #dddddd;
     background: #fff;
-    width: 90%;
+    width: 80%;
     height: 38px;
     border-radius: 6px;
     line-height: 38px;
