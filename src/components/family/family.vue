@@ -127,7 +127,8 @@ export default {
       auditItem: {},
       nowTit: "",
       showPositionValue: false,
-      selected: ""
+      selected: "",
+      oneAddIndex:0
     };
   },
   props: {
@@ -241,8 +242,8 @@ export default {
           this.filter.name2 = item.mate.name;
         }
       } else if (type == 2) {//添加
-		
-		this.show8 = true;
+		this.filter = {}
+	  	this.show8 = true;
       } else if (type == 3) {
         //删除
       }
@@ -266,7 +267,15 @@ export default {
 	listJson(){
 		localStorage.setItem("list", JSON.stringify(this.list));
 	},
-	addPerson(){},
+	addPerson(index){
+    console.log(index);
+    this.filter = {}
+    this.auditType = 5
+    this.show8 = true;
+    this.oneAddIndex = index
+   
+
+  },
 	delMember(){
 		// this.list.splice(3,1)
 		let id = this.selected
@@ -336,6 +345,14 @@ export default {
 		  console.log(this.list);
 		  console.log(22222222);
 	  }
+	  if(this.auditType == 5){
+
+      console.log(addObj);
+      console.log(this.oneAddIndex);
+      console.log(this.list[this.oneAddIndex]);
+      this.list[this.oneAddIndex].listDital.push(addObj)
+
+	  }
 
       this.listJson()
       this.show8 = false;
@@ -372,6 +389,11 @@ export default {
 <style lang="less" scoped="">
 @import url("//at.alicdn.com/t/font_816014_n52lm48kl5a.css");
 .box {
+  &>ul{
+    height: 55vh;
+    overflow: scroll;
+    margin-bottom: 10px;
+  }
   .name {
     min-width: 75px;
     display: inline-block;
