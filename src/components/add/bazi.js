@@ -213,8 +213,10 @@ let sz = new Array("一", "二", "三", "四", "五", "六", "七", "八", "九"
           nongli:s6,
           shengxiao:s7,
           chunjie:cjy+'-'+cjr,
-          jieqian:'节前'+jq,
-          jiehou:'节后'+jh
+          jieqian:jq,
+          jiehou:jh,
+          bazi:gzn +"　"+ gzy+ "　"+ gzr+ "　"+ gzs,
+          wuxing:w[tn]+w[dn]+ "　"+ w[ty]+ w[dy]+ "　"+ w[tr]+ w[dr]+ "　"+ w[ts]+ w[ds]
 
       }
 

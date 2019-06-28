@@ -4,21 +4,22 @@
 		 <router-view> </router-view>
 		<tabbar>
 			<tabbar-item selected :link="{path:'/search'}">
-				<img slot="icon" src="../static/img/ship.jpg">
+				<img slot="icon" src="../static/img/sreach.png">
 				<span slot="label">检测</span>
 			</tabbar-item>
-			<tabbar-item show-dot :link="{path:'/family'}" >
-				<img slot="icon" src="../static/img/ship.jpg">
+			 <!-- show-dot -->
+			<tabbar-item :link="{path:'/family'}" >
+				<img slot="icon" src="../static/img/fam.png">
 				<span slot="label">族谱</span>
 			</tabbar-item>
 			<tabbar-item  :link="{path:'/add'}">
-				<img slot="icon" src="../static/img/ship.jpg">
-				<span slot="label">添加</span>
+				<img slot="icon" src="../static/img/bazi.png">
+				<span slot="label">八字</span>
 			</tabbar-item>
-			<tabbar-item badge="2">
+			<!-- <tabbar-item badge="2">
 				<img slot="icon" src="../static/img/ship.jpg">
-				<span slot="label">News</span>
-			</tabbar-item>
+				<span slot="label">关于</span>
+			</tabbar-item> -->
 		</tabbar>
 	</div>
 </template>
@@ -28,7 +29,9 @@
 	export default {
 		name: 'App',
 		data() {
-			return {}
+			return {
+				red:'red'
+			}
 		},
 		props: {},
 		computed: {},
@@ -55,5 +58,8 @@
 	html,body{
 		width: 100%;
 		margin: 0;
+	}
+	.weui-bar__item_on .weui-tabbar__label{
+color: #1296db!important
 	}
 </style>

@@ -1,7 +1,7 @@
 <template>
   <div>
     <x-header :left-options="{showBack: false}">族谱</x-header>
-    <button @click="clean()">clean</button>
+    <!-- <button @click="clean()">clean</button> -->
     <div class="box">
       <draggable element="ul" :options="{scroll:false}" v-model="list" @change="draChange">
         <div v-for="(item,$index) in list" class="one" :key="$index">
@@ -13,21 +13,21 @@
             :class="{'icon-duigou':selected==item2.id}"
             @click="tipTab(item2,item)"
           >
-            <span class="iconfont icon-nansheng name">{{item2.name}}</span>
+            <span class="iconfont  name" :class="item2.sex==1?'icon-nansheng':'icon-nvsheng'">{{item2.name}}</span>
 			
-            <span v-if="item2.mate" class="iconfont icon-nvsheng name">{{item2.mate.name}}</span>
+            <span v-if="item2.mate" class="iconfont name" :class="item2.mate.sex==1?'icon-nansheng':'icon-nvsheng'">{{item2.mate.name}}</span>
           </div>
         </div>
       </draggable>
 
       <div style="width: 90%;margin: auto;">
-        <x-button type="primary" @click.native="auditMember(1)">编辑</x-button>
+        <x-button type="primary" :disabled="selected==''" @click.native="auditMember(1)">编辑</x-button>
         <div class="btns-bottom">
           <nav>
             <x-button type="primary" @click.native="auditMember(2)">添加后裔</x-button>
           </nav>
           <nav>
-            <x-button type="default" @click.native="delMember()">删除</x-button>
+            <x-button type="default" :disabled="selected==''" @click.native="delMember()">删除</x-button>
           </nav>
         </div>
         <!--<x-button type="primary"   @click.native="addMember('')">添加</x-button>-->
@@ -242,13 +242,21 @@ export default {
           this.filter.name2 = item.mate.name;
         }
       } else if (type == 2) {//添加
-		this.filter = {}
-	  	this.show8 = true;
+            // this.filter = {}
+              this.show8 = true;
       } else if (type == 3) {
         //删除
       }
     },
     onBlur() {},
+    clearFilter(){
+      this.filter = {
+        name: "",
+        name2: "",
+        sex: "1",
+        isMary: false
+      };
+    },
     tipTab(item, item2) {
       //item 当前对象    //item2 当前兄弟对象
       console.log(item);
@@ -269,7 +277,7 @@ export default {
 	},
 	addPerson(index){
     console.log(index);
-    this.filter = {}
+    this.clearFilter()
     this.auditType = 5
     this.show8 = true;
     this.oneAddIndex = index
@@ -340,13 +348,15 @@ export default {
 			  listDital:[addObj],
 			  tit:this.list.length
 		  }
-		  
+      console.log('add=======');
+		  console.log(obj);
 		  this.list.push(obj)
 		  console.log(this.list);
-		  console.log(22222222);
+		 
+      
 	  }
 	  if(this.auditType == 5){
-
+      addObj.id = new Date().getTime()
       console.log(addObj);
       console.log(this.oneAddIndex);
       console.log(this.list[this.oneAddIndex]);
@@ -388,6 +398,7 @@ export default {
 
 <style lang="less" scoped="">
 @import url("//at.alicdn.com/t/font_816014_n52lm48kl5a.css");
+
 .box {
   &>ul{
     height: 55vh;
