@@ -3,7 +3,7 @@
     <x-header :left-options="{showBack: false}">族谱</x-header>
     <!-- <button @click="clean()">clean</button> -->
     <div class="box">
-      <draggable element="ul" :options="{scroll:false}" v-model="list" @change="draChange">
+      <!-- <draggable element="ul" :options="{scroll:false}" v-model="list" @change="draChange"> -->
         <div v-for="(item,$index) in list" class="one" :key="$index">
 			<div class="add-person" @click.stop="addPerson($index)">+</div>
           <div
@@ -18,7 +18,7 @@
             <span v-if="item2.mate" class="iconfont name" :class="item2.mate.sex==1?'icon-nansheng':'icon-nvsheng'">{{item2.mate.name}}</span>
           </div>
         </div>
-      </draggable>
+      <!-- </draggable> -->
 
       <div style="width: 90%;margin: auto;">
         <x-button type="primary" :disabled="selected==''" @click.native="auditMember(1)">编辑</x-button>

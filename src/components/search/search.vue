@@ -14,6 +14,7 @@
       @on-submit="onSubmit"
       ref="search"
     ></search>
+   
     <nav class="nav">
       <button-tab v-model="tabs">
         <button-tab-item @on-item-click="consoleIndex()">
@@ -24,14 +25,23 @@
         </button-tab-item>
       </button-tab>
     </nav>
-    <main class="main">
+    <main class="main" v-if="tabs==0">
       <div v-for="(item,$index) in names.boy.hot" :key="$index" class="box">
         <p class="name">{{item.name}}</p>
         <p class="describe">{{item.describe}}</p>
       </div>
-	  <nav>
-		  <span v-for="(item,$index) in names.boy.list" :key="$index">{{item}}</span>
-	  </nav>
+      <nav class="other">
+        <span v-for="(item,$index) in names.boy.list" :key="$index">{{item}}</span>
+      </nav>
+    </main>
+    <main class="main" v-if="tabs==1">
+      <div v-for="(item,$index) in names2.boy.hot" :key="$index" class="box">
+        <p class="name">{{item.name}}</p>
+        <p class="describe">{{item.describe}}</p>
+      </div>
+      <nav class="other">
+        <span v-for="(item,$index) in names2.boy.list" :key="$index">{{item}}</span>
+      </nav>
     </main>
   </div>
 </template>
@@ -49,7 +59,7 @@ import {
 import axios from "axios";
 import { data } from "static2/json/data.js";
 import PY from "@/core/pinyin.js";
-import { names } from "../../common/datas/name";
+import { names,names2 } from "../../common/datas/name";
 let pinyin = new PY();
 console.log(names);
 //import
@@ -60,9 +70,11 @@ export default {
       results: [],
       value: "",
       list: data.list,
-      names: names,
+      names: {},
+      names2:names2,
       tabs: 0,
-      red: "#f75731"
+      red: "#f75731",
+      aaa:''
     };
   },
   props: {
@@ -89,10 +101,12 @@ export default {
     //   })
     //   .catch(function (error) {
     //     console.log(error);
-	//   });
-	// let arr = this.names.boy.list.replace(/[\r\n]/g,"").replace(/\ +/g,"")
-	// let a = arr.split('、')
-	console.log(this.names.boy.list);
+    //   });
+    // let arr = names2.boy.list.replace(/[\r\n]/g,"").replace(/\ +/g,"")
+    // let a = arr.split('、')
+    // console.log(a);
+    this.names=names
+    this.aaa=1
   },
   mounted() {
     //比created慢  el 加载完毕
@@ -108,6 +122,15 @@ export default {
     //方法
     consoleIndex() {
       console.log("click demo01", this.tabs);
+      console.log(this.tabs=='0');
+      if(this.tabs=='0'){
+        this.names == names
+      }else{
+        console.log(222);
+        console.log(names2);
+this.aaa=2
+         this.names == names2
+      }
     },
     setFocus() {
       this.$refs.search.setFocus();
@@ -123,6 +146,7 @@ export default {
         return;
       }
       let n = this.nameList(val.substr(1));
+      this.tabs=9
       if (n) {
         this.results = [
           {
@@ -149,9 +173,11 @@ export default {
     },
     onFocus() {
       console.log("on focus");
+      this.tabs=0
     },
     onCancel() {
       console.log("on cancel");
+      this.tabs=0
     },
     nameList(n) {
       let names = n;
@@ -226,14 +252,29 @@ function getResult(val) {
 </style>
 <style lang="less" scoped>
 .search {
-  .nav{
-	  width: 90%;
-	  margin: 20px auto 10px;
+  .nav {
+    width: 90%;
+    margin: 20px auto 10px;
   }
   .main {
-	padding: 10px;
-	height: 70vh;
-	overflow:scroll;
+    padding: 10px;
+    height: 70vh;
+    overflow: scroll;
+    .other{
+      text-align: left;
+      display: flex;
+      justify-content: space-between;
+      // flex-direction: 
+          flex-wrap: wrap;
+          color: #000000;
+      span{
+
+        display: inline-block;
+        margin: 5px 10px;
+        
+        
+      }
+    }
     .box {
       margin-bottom: 20px;
       text-align: left;
